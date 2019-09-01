@@ -10,15 +10,11 @@ This app uses ruby 2.5.1 and rails 5.2.3.
 2. If Redis is already installed in your system, start it with `redis-server` command.
 3. Run `rails s` to start the server.
 
-## Methodology
-
 ### Security Considerations
 
 1. Sanitizing the params to prevent code injection including XSS. Fortunately, the Redis protocol has no concept of string escaping, so injection is impossible under normal circumstances.
 2. Having strong params to prevent a malicious user from assigning any value to any attribute. I used the standard rails method for this.
-3. Hashing the password so that if the data is compromised, users' passwords are not exposed. For this, I used bcrypt.
-
-If given more time, I would add a session JWT Token to persist the state for authentication. Since redis is already installed, we could store the session in a cache.
+3. Hashing the password so that if the data is compromised, users' passwords are not exposed. For this, I used bcrypt, along with basic security audit for input.
 
 ### Problems with using redis as a primary database.
 
@@ -37,3 +33,7 @@ Both solutions are beyond the scope of this project. If the goal was to scale th
 ## Testing
 
 Basic controller tests have been added for registration and login routes.
+
+### Future Development
+
+If given more time, I would add a JSON Web Token to persist the state for authentication. Since redis is already installed, we could store the session in a cache.

@@ -38,7 +38,7 @@ class Authenticator
   end
 
   def matches_password?(password)
-    BCrypt::Password.new(password) == @password
+    BCrypt::Password.create(password) == @password
   end
 
   def key

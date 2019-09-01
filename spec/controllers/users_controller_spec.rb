@@ -24,7 +24,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'returns an error response with email already taken message' do
-        post :create, params: { email: @email, password: @password }
+        post :create, params: { email: @email, password: @password}
         expect(response).to have_http_status(:unauthorized)
         expect(response.body).to include('Email Address is taken. Please try again.')
       end
