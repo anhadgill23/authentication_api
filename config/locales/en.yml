@@ -36,12 +36,17 @@ en:
     auth:
       email_is_taken:
         status: :unauthorized
-        message: 'Email Address is taken. Please try again'
+        message: 'Email Address is taken. Please try again.'
 
       field_is_empty:
         status: :unauthorized
-        message: 'Email or password is blank. Please try again'
+        message: 'Email or password is blank. Please try again.'
 
       incorrect_combination:
-        status: :error
+        status: :unauthorized
         message: 'Incorrect username/password. Please try again.'
+
+      password_too_short:
+        status: :unauthorized
+        message: 'Password is too short. Please try again.'
+

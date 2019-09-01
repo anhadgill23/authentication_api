@@ -1,4 +1,6 @@
 class Authenticator
+  include Rdb
+
   def initialize(user_params)
     @email = user_params[:email]
     @password = user_params[:password]
@@ -9,20 +11,34 @@ class Authenticator
   end
 
   def call
-    user = find_by_email(key)
-    if @email.nil? || @password.nil?
-      I18n.t('exceptions.auth.incorrect_combination')
-    elsif user.present? && user == @password
-      success(email, user)
+    check_auth_conditions!
+  end
+
+  private
+
+  def check_auth_conditions!
+    email = Rdb.hash_get key, 'email'
+    password = Rdb.hash_get key, 'password'
+
+    if blank_field?(@email, @password)
+      I18n.t('exceptions.auth.field_is_empty')
+    elsif match?(email, password)
+      success(email, password)
     else
       I18n.t('exceptions.auth.incorrect_combination')
     end
   end
 
-  private
+  def blank_field?(email, password)
+    email.blank? || password.blank?
+  end
 
-  def find_by_email(key)
-    Rdb.hash_get key: key, field: 'password'
+  def match?(email, password)
+    email.present? && matches_password?(password)
+  end
+
+  def matches_password?(password)
+    BCrypt::Password.new(password) == @password
   end
 
   def key
@@ -31,8 +47,7 @@ class Authenticator
 
   def success(email, password)
     {
-      status: 'ok',
-      code: 200,
+      status: :ok,
       user: {
         email: email,
         password: password

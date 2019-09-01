@@ -1,8 +1,12 @@
 class SessionsController < ApplicationController
   def create
-    debugger
     response = Authenticator.call(user_params)
-    render json: response
+
+    if response[:status] == :ok
+      render json: response, status: :ok
+    else
+      render json: response, status: :unauthorized
+    end
   end
 
   private
