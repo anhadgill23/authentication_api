@@ -1,5 +1,4 @@
 begin
-  puts 'Connecting to Redis...'
   $redis = Redis.new(host: 'localhost')
   $redis.ping
 rescue Errno::ECONNREFUSED => e
