@@ -61,6 +61,6 @@ class UserCreator
   end
 
   def password_not_complex?
-    return true unless @password.match(/[a-zA-Z0-9]{8,}/)
+    return true unless @password.length >= 8
   end
 end
